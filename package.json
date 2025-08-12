@@ -1,5 +1,5 @@
 {
-  "name": "Car Booking Application",
+  "name": "car-booking",
   "private": true,
   "workspaces": [
     "apps/*",

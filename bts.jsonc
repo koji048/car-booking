@@ -4,7 +4,7 @@
 {
   "$schema": "https://r2.better-t-stack.dev/schema.json",
   "version": "2.32.1",
-  "createdAt": "2025-08-12T10:26:38.882Z",
+  "createdAt": "2025-08-12T10:41:44.432Z",
   "database": "postgres",
   "orm": "drizzle",
   "backend": "next",
