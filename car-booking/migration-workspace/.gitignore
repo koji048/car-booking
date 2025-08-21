@@ -1,0 +1,12 @@
+# Migration workspace - separate git repositories
+car-booking-types/
+car-booking-utils/
+car-booking-ui/
+car-booking-api/
+car-booking-web/
+car-booking-mobile/
+car-booking-infrastructure/
+
+# Temporary files
+*.tmp
+*.log

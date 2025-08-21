@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { Button } from '@ui/button';
-import { Card } from '@ui/card';
+import { Button } from '@car-booking/ui';
+import { Card } from '@car-booking/ui';
 import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 
 interface GoogleFlightsDatePickerProps {

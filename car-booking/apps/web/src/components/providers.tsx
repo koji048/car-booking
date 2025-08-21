@@ -4,7 +4,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { httpBatchLink } from "@trpc/client";
 import { useState } from "react";
 import { trpc } from "../utils/trpc";
-import { Toaster } from "./ui/sonner";
+import { Toaster } from '@car-booking/ui';
+import superjson from 'superjson';
 
 export default function Providers({
   children
@@ -25,6 +26,7 @@ export default function Providers({
       links: [
         httpBatchLink({
           url: `${process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3005'}/api/trpc`,
+          transformer: superjson,
           fetch(url, options) {
             return fetch(url, {
               ...options,

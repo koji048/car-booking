@@ -1,14 +1,14 @@
 'use client';
 
 import { useState } from 'react';
-import { Button } from './ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
-import { Badge } from './ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
+import { Button } from '@car-booking/ui';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@car-booking/ui';
+import { Badge } from '@car-booking/ui';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@car-booking/ui';
 import { CheckCircle, Clock, XCircle, Car, Calendar, User as UserIcon, Plus, MoreHorizontal, Loader2 } from 'lucide-react';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from './ui/dropdown-menu';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@car-booking/ui';
 import { toast } from 'sonner';
-import type { User } from '@/types';
+import type { User } from '@car-booking/types';
 
 interface MyBookingsPageProps {
   user: User;

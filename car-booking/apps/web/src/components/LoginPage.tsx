@@ -1,13 +1,14 @@
 'use client';
 
-import { useState } from 'react';
-import { Button } from './ui/button';
-import { Input } from './ui/input';
-import { Label } from './ui/label';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
-import { Separator } from './ui/separator';
+import { useState, useEffect } from 'react';
+import { Button } from '@car-booking/ui';
+import { Input } from '@car-booking/ui';
+import { Label } from '@car-booking/ui';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@car-booking/ui';
+import { Separator } from '@car-booking/ui';
+import { OAuthLogin } from './OAuthLogin';
 // // import companyLogo - removed figma import;
-import type { User } from '@/types';
+import type { User } from '@car-booking/types';
 
 const MOCK_USERS: User[] = [
   { name: 'John Doe', email: 'john.doe@company.com', role: 'Employee' },
@@ -24,6 +25,42 @@ export function LoginPage({ onLogin }: LoginPageProps) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [redirectMessage, setRedirectMessage] = useState('');
+  
+  // Check for OAuth/SAML session on mount
+  useEffect(() => {
+    const checkExistingSession = () => {
+      const userInfo = getCookie('user_info');
+      if (userInfo) {
+        try {
+          const user = JSON.parse(decodeURIComponent(userInfo));
+          console.log('Existing user session found:', user);
+          
+          // Show loading state with role info
+          setIsLoading(true);
+          
+          // Set redirect message based on role
+          const roleMessages = {
+            'Admin': 'Redirecting to Admin Dashboard...',
+            'HR': 'Redirecting to HR Approval Dashboard...',
+            'Manager': 'Redirecting to Manager Approval Dashboard...',
+            'Employee': 'Redirecting to My Bookings...'
+          };
+          setRedirectMessage(roleMessages[user.role as keyof typeof roleMessages] || 'Redirecting...');
+          
+          // Small delay to show the redirect message
+          setTimeout(() => {
+            console.log(`Redirecting ${user.role} user to their dashboard...`);
+            onLogin(user);
+          }, 1000);
+        } catch (e) {
+          console.error('Error parsing user info:', e);
+        }
+      }
+    };
+    
+    checkExistingSession();
+  }, [onLogin]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -70,11 +107,22 @@ export function LoginPage({ onLogin }: LoginPageProps) {
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
       <div className="w-full max-w-md">
-        <div className="mb-8 text-center">
-          {/* Logo removed */}
-          <h1 className="text-2xl mb-2">Car Booking System</h1>
-          <p className="text-muted-foreground">Sign in with your corporate account</p>
-        </div>
+        {/* Show redirect message if redirecting */}
+        {redirectMessage && (
+          <div className="mb-8 text-center animate-pulse">
+            <h2 className="text-xl font-semibold mb-2">Welcome back!</h2>
+            <p className="text-muted-foreground">{redirectMessage}</p>
+          </div>
+        )}
+        
+        {/* Show login form if not redirecting */}
+        {!redirectMessage && (
+          <>
+            <div className="mb-8 text-center">
+              {/* Logo removed */}
+              <h1 className="text-2xl mb-2">Car Booking System</h1>
+              <p className="text-muted-foreground">Sign in with your corporate account</p>
+            </div>
         
         <Card className="border border-border">
           <CardHeader className="space-y-2">
@@ -84,36 +132,8 @@ export function LoginPage({ onLogin }: LoginPageProps) {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            {/* Microsoft 365 Single Sign-On */}
-            <div className="space-y-4">
-              <Button 
-                type="button"
-                variant="outline"
-                className="w-full h-12 gap-3 border-2 hover:bg-accent/50"
-                onClick={handleMicrosoftLogin}
-                disabled={isLoading}
-              >
-                <svg 
-                  width="20" 
-                  height="20" 
-                  viewBox="0 0 21 21" 
-                  fill="none" 
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <rect x="1" y="1" width="9" height="9" fill="#F25022"/>
-                  <rect x="11" y="1" width="9" height="9" fill="#7FBA00"/>
-                  <rect x="1" y="11" width="9" height="9" fill="#00A4EF"/>
-                  <rect x="11" y="11" width="9" height="9" fill="#FFB900"/>
-                </svg>
-                <span className="text-base font-medium">
-                  {isLoading ? 'Signing you in...' : 'Sign in with Microsoft 365'}
-                </span>
-              </Button>
-              
-              <div className="text-xs text-muted-foreground text-center">
-                Use your company Microsoft account for secure access
-              </div>
-            </div>
+            {/* OAuth 2.0 Single Sign-On */}
+            <OAuthLogin />
 
             {/* Divider */}
             <div className="flex items-center gap-4 my-6">
@@ -179,7 +199,23 @@ export function LoginPage({ onLogin }: LoginPageProps) {
             </div>
           </CardContent>
         </Card>
+          </>
+        )}
       </div>
     </div>
   );
+}
+
+// Helper function to get cookie value
+function getCookie(name: string): string | null {
+  if (typeof document === 'undefined') return null;
+  
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  
+  if (parts.length === 2) {
+    return parts.pop()?.split(';').shift() || null;
+  }
+  
+  return null;
 }

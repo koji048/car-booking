@@ -1,10 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import { LoginPageLDAP } from '../../../../../components/LoginPageLDAP';
-import { CarBookingPage } from '../../../../../components/CarBookingPage';
-import { MyBookingsPage } from '../../../../../components/MyBookingsPage';
-import type { User, BookingData, AppState } from '@/types';
+import { LoginPageLDAP } from '../../components/LoginPageLDAP';
+import { CarBookingPage } from '../../components/CarBookingPage';
+import { MyBookingsPage } from '../../components/MyBookingsPage';
+import type { User, BookingData, AppState } from '@car-booking/types';
 
 export default function LDAPTestApp() {
   const [currentState, setCurrentState] = useState<AppState>('login');

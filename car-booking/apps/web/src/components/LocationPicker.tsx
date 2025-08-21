@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { Button } from '@ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@ui/card';
-import { Input } from '@ui/input';
-import { Label } from '@ui/label';
+import { Button } from '@car-booking/ui';
+import { Card, CardContent, CardHeader, CardTitle } from '@car-booking/ui';
+import { Input } from '@car-booking/ui';
+import { Label } from '@car-booking/ui';
 import { MapPin, Search, Navigation, Building2 } from 'lucide-react';
 
 interface Location {

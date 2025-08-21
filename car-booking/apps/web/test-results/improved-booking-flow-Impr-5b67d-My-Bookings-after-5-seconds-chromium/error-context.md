@@ -1,0 +1,192 @@
+# Page snapshot
+
+```yaml
+- generic:
+  - generic:
+    - banner:
+      - generic:
+        - generic:
+          - img
+          - heading [level=1]: Car Booking System
+        - generic:
+          - generic:
+            - img
+            - generic: John Employee
+            - generic: Employee
+          - button: Sign Out
+    - generic:
+      - generic:
+        - heading [level=2]: Book a Vehicle
+        - paragraph: Fill in the details below to request a vehicle for your trip
+      - alert:
+        - img
+        - generic:
+          - text: Your booking request will be sent to
+          - strong: HR Department
+          - text: for approval (no direct manager assigned)
+      - generic:
+        - generic:
+          - generic:
+            - generic:
+              - heading [level=4]:
+                - img
+                - text: Trip Schedule
+            - generic:
+              - generic:
+                - generic:
+                  - generic: Departure Date
+                  - textbox: 2025-08-21
+                - generic:
+                  - generic: Departure Time
+                  - combobox [expanded]:
+                    - generic: Select time
+                    - img
+              - generic:
+                - checkbox [checked]:
+                  - generic:
+                    - img
+                - generic: Return same day
+          - generic:
+            - generic:
+              - heading [level=4]:
+                - img
+                - text: Trip Details
+            - generic:
+              - generic:
+                - generic: Destination
+                - textbox
+              - generic:
+                - generic: Purpose of Trip
+                - textbox
+              - generic:
+                - generic:
+                  - generic: Number of Passengers
+                  - spinbutton: "1"
+              - generic:
+                - generic: Special Requests (Optional)
+                - textbox
+          - generic:
+            - generic:
+              - heading [level=4]:
+                - img
+                - text: Select Vehicle
+            - generic:
+              - generic:
+                - generic:
+                  - generic:
+                    - generic:
+                      - generic:
+                        - img
+                      - generic:
+                        - heading [level=4]: Toyota Camry
+                        - paragraph: Sedan • 5 seats
+                        - generic:
+                          - generic: Automatic
+                          - generic: Hybrid
+                        - paragraph: "Plate: ABC-1234"
+                    - generic: Available
+                - generic:
+                  - generic:
+                    - generic:
+                      - generic:
+                        - img
+                      - generic:
+                        - heading [level=4]: Honda CR-V
+                        - paragraph: SUV • 7 seats
+                        - generic:
+                          - generic: Automatic
+                          - generic: Petrol
+                        - paragraph: "Plate: XYZ-5678"
+                    - generic: Available
+                - generic:
+                  - generic:
+                    - generic:
+                      - generic:
+                        - img
+                      - generic:
+                        - heading [level=4]: Toyota Hiace
+                        - paragraph: Van • 12 seats
+                        - generic:
+                          - generic: Manual
+                          - generic: Diesel
+                        - paragraph: "Plate: VAN-9012"
+                    - generic: Available
+        - generic:
+          - generic:
+            - generic:
+              - heading [level=4]: Booking Summary
+            - generic:
+              - generic:
+                - paragraph: Approval Flow
+                - generic:
+                  - img
+                  - generic:
+                    - generic:
+                      - paragraph: HR Department
+                      - paragraph: No direct manager
+              - generic:
+                - paragraph: Departure
+                - paragraph: Thu, Aug 21, 2025
+              - generic:
+                - paragraph: Passengers
+                - paragraph: 1 person
+              - generic:
+                - button [disabled]: Submit Booking Request
+  - generic:
+    - generic: ⚠️ DEV MODE
+    - generic:
+      - generic: "Quick Login As:"
+      - generic:
+        - button: Employee
+        - button: Manager
+        - button: HR
+        - button: Admin
+      - generic:
+        - generic: "Current: John Employee (Employee)"
+        - generic:
+          - button: Booking
+          - button: My Bookings
+  - region "Notifications alt+T"
+  - alert
+  - button [ref=e6] [cursor=pointer]:
+    - img [ref=e7] [cursor=pointer]
+  - listbox [ref=e10]:
+    - option "Full Day" [active] [ref=e11]:
+      - generic [ref=e13]: Full Day
+    - option "08:00" [ref=e14]:
+      - generic [ref=e16]: 08:00
+    - option "08:30" [ref=e17]:
+      - generic [ref=e19]: 08:30
+    - option "09:00" [ref=e20]:
+      - generic [ref=e22]: 09:00
+    - option "09:30" [ref=e23]:
+      - generic [ref=e25]: 09:30
+    - option "10:00" [ref=e26]:
+      - generic [ref=e28]: 10:00
+    - option "10:30" [ref=e29]:
+      - generic [ref=e31]: 10:30
+    - option "11:00" [ref=e32]:
+      - generic [ref=e34]: 11:00
+    - option "11:30" [ref=e35]:
+      - generic [ref=e37]: 11:30
+    - option "12:00" [ref=e38]:
+      - generic [ref=e40]: 12:00
+    - option "12:30" [ref=e41]:
+      - generic [ref=e43]: 12:30
+    - option "13:00" [ref=e44]:
+      - generic [ref=e46]: 13:00
+    - option "13:30" [ref=e47]:
+      - generic [ref=e49]: 13:30
+    - option "14:00" [ref=e50]:
+      - generic [ref=e52]: 14:00
+    - option "14:30" [ref=e53]:
+      - generic [ref=e55]: 14:30
+    - option "15:00" [ref=e56]:
+      - generic [ref=e58]: 15:00
+    - option "15:30" [ref=e59]:
+      - generic [ref=e61]: 15:30
+    - option "16:00" [ref=e62]:
+      - generic [ref=e64]: 16:00
+    - option "16:30" [ref=e65]:
+      - generic [ref=e67]: 16:30
+```

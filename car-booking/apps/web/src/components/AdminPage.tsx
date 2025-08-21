@@ -1,19 +1,19 @@
 'use client';
 
 import { useState } from 'react';
-import { Button } from '@ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@ui/card';
-import { Input } from '@ui/input';
-import { Label } from '@ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@ui/select';
+import { Button } from '@car-booking/ui';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@car-booking/ui';
+import { Input } from '@car-booking/ui';
+import { Label } from '@car-booking/ui';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@car-booking/ui';
 import { ImageWithFallback } from './figma/ImageWithFallback';
 import { Car, User, Plus, Edit3, Trash2, Settings, Save, X, Upload, Link, Image, Loader2 } from 'lucide-react';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@ui/dialog';
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@ui/alert-dialog';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@ui/tabs';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@car-booking/ui';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@car-booking/ui';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@car-booking/ui';
 import { trpc } from '../utils/trpc';
 import { toast } from 'sonner';
-import { Skeleton } from '@ui/skeleton';
+import { Skeleton } from '@car-booking/ui';
 
 interface User {
   name: string;

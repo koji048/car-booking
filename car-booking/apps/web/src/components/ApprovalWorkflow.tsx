@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
-import { Button } from '@ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@ui/card';
-import { Badge } from '@ui/badge';
+import { Button } from '@car-booking/ui';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@car-booking/ui';
+import { Badge } from '@car-booking/ui';
 import { CheckCircle, Clock, User as UserIcon, Users, Car, Calendar, MapPin } from 'lucide-react';
-import type { User, BookingData, AppState } from '@/types';
+import type { User, BookingData, AppState } from '@car-booking/types';
 
 interface ApprovalWorkflowProps {
   booking: BookingData;

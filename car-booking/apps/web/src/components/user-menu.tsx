@@ -5,10 +5,10 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from '@car-booking/ui'
 import { authClient } from "@/lib/auth-client";
-import { Button } from "./ui/button";
-import { Skeleton } from "./ui/skeleton";
+import { Button } from '@car-booking/ui'
+import { Skeleton } from '@car-booking/ui'
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 

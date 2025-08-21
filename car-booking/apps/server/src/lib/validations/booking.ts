@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { validateBookingDateTime } from "../utils/datetime";
+import { validateBookingDateTime } from "@car-booking/utils";
 
 export const createBookingSchema = z.object({
   vehicleId: z.string().uuid(),

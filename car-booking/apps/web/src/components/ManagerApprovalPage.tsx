@@ -1,16 +1,16 @@
 'use client';
 
 import { useState } from 'react';
-import { Button } from '@ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@ui/card';
-import { Badge } from '@ui/badge';
-import { Textarea } from '@ui/textarea';
-import { Label } from '@ui/label';
+import { Button } from '@car-booking/ui';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@car-booking/ui';
+import { Badge } from '@car-booking/ui';
+import { Textarea } from '@car-booking/ui';
+import { Label } from '@car-booking/ui';
 import { CheckCircle, XCircle, Clock, User, Car, Calendar, MessageSquare, Loader2 } from 'lucide-react';
 import { ImageWithFallback } from './figma/ImageWithFallback';
 import { trpc } from '../utils/trpc';
 import { toast } from 'sonner';
-import type { User as UserType, BookingData } from '@/types';
+import type { User as UserType, BookingData } from '@car-booking/types';
 
 interface Booking {
   id?: string;

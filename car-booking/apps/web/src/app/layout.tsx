@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "../index.css";
-import { Toaster } from "@/components/ui/sonner";
+import { Toaster } from '@car-booking/ui'
 
 export const metadata: Metadata = {
   title: "Car Booking System",

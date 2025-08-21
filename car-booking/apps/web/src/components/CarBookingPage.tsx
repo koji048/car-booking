@@ -1,17 +1,18 @@
 'use client';
 
-import { useState } from 'react';
-import { Button } from './ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
-import { Input } from './ui/input';
-import { Label } from './ui/label';
-import { Badge } from './ui/badge';
-import { Textarea } from './ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
-import { Checkbox } from './ui/checkbox';
-import { Car, Calendar, Clock, MapPin, User as UserIcon, FileText, Users, Loader2 } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Button } from '@car-booking/ui';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@car-booking/ui';
+import { Input } from '@car-booking/ui';
+import { Label } from '@car-booking/ui';
+import { Badge } from '@car-booking/ui';
+import { Textarea } from '@car-booking/ui';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@car-booking/ui';
+import { Checkbox } from '@car-booking/ui';
+import { Alert, AlertDescription } from '@car-booking/ui';
+import { Car, Calendar, Clock, MapPin, User as UserIcon, FileText, Users, Loader2, Info, CheckCircle } from 'lucide-react';
 import { toast } from 'sonner';
-import type { User, BookingData } from '@/types';
+import type { User, BookingData } from '@car-booking/types';
 
 interface CarBookingPageProps {
   user: User;
@@ -73,8 +74,58 @@ export function CarBookingPage({ user, onLogout, onBookingSubmitted }: CarBookin
   const [passengers, setPassengers] = useState('1');
   const [specialRequests, setSpecialRequests] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [managerInfo, setManagerInfo] = useState<{
+    name: string;
+    email: string;
+  } | null>(null);
+  const [isLoadingManagerInfo, setIsLoadingManagerInfo] = useState(true);
 
   const vehicles = MOCK_VEHICLES;
+
+  // Fetch user's manager information on component mount
+  useEffect(() => {
+    fetchManagerInfo();
+  }, []);
+
+  const fetchManagerInfo = async () => {
+    try {
+      // Check if we're in dev mode
+      const isDevelopment = !document.cookie.includes('session=');
+      
+      if (isDevelopment) {
+        // Dev mode: Use mock manager info
+        if (user.role === 'Employee') {
+          setManagerInfo({
+            name: 'Jane Manager',
+            email: 'jane.manager@company.com',
+          });
+        }
+        // Managers, HR, and Admin don't have managers
+      } else {
+        // Production mode: Fetch from API
+        const response = await fetch('/api/bookings/submit', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          if (data.manager) {
+            setManagerInfo({
+              name: data.manager.name,
+              email: data.manager.email,
+            });
+          }
+        }
+      }
+    } catch (error) {
+      console.error('Failed to fetch manager info:', error);
+    } finally {
+      setIsLoadingManagerInfo(false);
+    }
+  };
 
   const handleSubmit = async () => {
     // Validation
@@ -101,28 +152,109 @@ export function CarBookingPage({ user, onLogout, onBookingSubmitted }: CarBookin
 
     setIsSubmitting(true);
     
-    // Simulate API call
-    setTimeout(() => {
-      const bookingData: BookingData = {
-        id: Date.now().toString(),
-        userId: user.id,
-        carId: selectedCar,
-        departureDate: departureDate.toISOString(),
-        returnDate: returnDate?.toISOString() || departureDate.toISOString(),
-        departureTime: selectedTime,
-        returnTime: returnTime || selectedTime,
-        purpose,
-        destination,
-        passengers: parseInt(passengers),
-        specialRequests,
-        status: 'pending',
-        createdAt: new Date().toISOString()
-      };
+    try {
+      // Check if we're in dev mode or if the API is available
+      const isDevelopment = !document.cookie.includes('session=');
+      
+      if (isDevelopment) {
+        // Dev mode: Create mock booking without API call
+        const bookingData: BookingData = {
+          id: `BK-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`.toUpperCase(),
+          userId: user.id || 'dev-user',
+          carId: selectedCar,
+          departureDate: departureDate.toISOString(),
+          returnDate: returnDate?.toISOString() || departureDate.toISOString(),
+          departureTime: selectedTime,
+          returnTime: returnTime || selectedTime,
+          purpose,
+          destination,
+          passengers: parseInt(passengers),
+          specialRequests,
+          status: 'pending',
+          createdAt: new Date().toISOString()
+        };
 
-      toast.success('Booking submitted successfully!');
-      onBookingSubmitted(bookingData);
+        // Show success message based on manager info
+        if (managerInfo) {
+          toast.success(`Booking request sent to ${managerInfo.name}`);
+        } else {
+          toast.success('Booking submitted successfully!');
+        }
+
+        // Simulate small delay for realism
+        await new Promise(resolve => setTimeout(resolve, 500));
+        
+        onBookingSubmitted(bookingData);
+        
+        // Reset form
+        setSelectedCar('');
+        setPurpose('');
+        setDestination('');
+        setPassengers('1');
+        setSpecialRequests('');
+      } else {
+        // Production mode: Call actual API
+        const response = await fetch('/api/bookings/submit', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            vehicleId: selectedCar,
+            startDate: departureDate.toISOString(),
+            endDate: returnDate?.toISOString() || departureDate.toISOString(),
+            purpose,
+            destination,
+            passengers: parseInt(passengers),
+          }),
+        });
+
+        if (response.ok) {
+          const result = await response.json();
+          
+          // Show success message with manager routing info
+          if (result.routing?.assignedTo) {
+            toast.success(result.message || `Booking request sent to ${result.routing.assignedTo}`);
+          } else {
+            toast.success('Booking submitted successfully!');
+          }
+
+          // Create booking data for parent component
+          const bookingData: BookingData = {
+            id: result.booking.id,
+            userId: user.id,
+            carId: selectedCar,
+            departureDate: departureDate.toISOString(),
+            returnDate: returnDate?.toISOString() || departureDate.toISOString(),
+            departureTime: selectedTime,
+            returnTime: returnTime || selectedTime,
+            purpose,
+            destination,
+            passengers: parseInt(passengers),
+            specialRequests,
+            status: result.booking.status,
+            createdAt: result.booking.submittedAt
+          };
+
+          onBookingSubmitted(bookingData);
+          
+          // Reset form
+          setSelectedCar('');
+          setPurpose('');
+          setDestination('');
+          setPassengers('1');
+          setSpecialRequests('');
+        } else {
+          const error = await response.json();
+          toast.error(error.error || 'Failed to submit booking');
+        }
+      }
+    } catch (error) {
+      console.error('Booking submission error:', error);
+      toast.error('Failed to submit booking request');
+    } finally {
       setIsSubmitting(false);
-    }, 1000);
+    }
   };
 
   const formatDate = (date: Date) => {
@@ -161,6 +293,24 @@ export function CarBookingPage({ user, onLogout, onBookingSubmitted }: CarBookin
           <h2 className="text-2xl font-bold mb-2">Book a Vehicle</h2>
           <p className="text-muted-foreground">Fill in the details below to request a vehicle for your trip</p>
         </div>
+
+        {/* Manager Information Alert */}
+        {!isLoadingManagerInfo && (
+          <Alert className="mb-6">
+            <Info className="h-4 w-4" />
+            <AlertDescription>
+              {managerInfo ? (
+                <>
+                  Your booking request will be sent to your manager: <strong>{managerInfo.name}</strong> ({managerInfo.email})
+                </>
+              ) : (
+                <>
+                  Your booking request will be sent to <strong>HR Department</strong> for approval (no direct manager assigned)
+                </>
+              )}
+            </AlertDescription>
+          </Alert>
+        )}
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Booking Form */}
@@ -358,6 +508,27 @@ export function CarBookingPage({ user, onLogout, onBookingSubmitted }: CarBookin
                 <CardTitle>Booking Summary</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
+                {/* Approval Flow */}
+                <div className="pb-4 border-b">
+                  <p className="text-sm text-muted-foreground mb-2">Approval Flow</p>
+                  <div className="flex items-center gap-2">
+                    <CheckCircle className="h-4 w-4 text-green-500" />
+                    <div className="text-sm">
+                      {managerInfo ? (
+                        <div>
+                          <p className="font-medium">{managerInfo.name}</p>
+                          <p className="text-xs text-muted-foreground">Your Manager</p>
+                        </div>
+                      ) : (
+                        <div>
+                          <p className="font-medium">HR Department</p>
+                          <p className="text-xs text-muted-foreground">No direct manager</p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
                 {departureDate && (
                   <div>
                     <p className="text-sm text-muted-foreground">Departure</p>
